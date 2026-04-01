@@ -1,8 +1,8 @@
-===========================================
+Futura analise, e desempenho para a parte 1 e futuramente a parte 2
+
   ANALISADOR LÉXICO - MicroPascal
   Linguagens Formais, Autômatos e Compiladores
-  UCB - 2026
-===========================================
+ 
 
 -- O QUE É ISSO --
 
