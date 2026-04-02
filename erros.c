@@ -18,14 +18,16 @@ void analisarArquivo(const char *caminhoOriginal) {
     while ((c = fgetc(input)) != EOF) {
         coluna++;
 
-        // 1. Gerenciamento de Linhas e Colunas
+        //  Gerenciamento de Linhas e Colunas
+        
         if (c == '\n') {
             linha++;
             coluna = 0;
             continue;
         }
 
-        // 2. Lógica simplificada de Comentário (Exemplo com '{' e '}')
+        //  Lógica simplificada de Comentário
+
         if (!emComentario && c == '{') {
             emComentario = 1;
             linInicioComentario = linha;
@@ -40,8 +42,8 @@ void analisarArquivo(const char *caminhoOriginal) {
             continue; // Ignora tudo dentro do comentário
         }
 
-        // 3. Detecção de Caracteres Inválidos (Ex: @, $, %)
-        // Aqui você define o que NÃO pertence à sua linguagem
+        //  Detecção de Caracteres Inválidos (Ex: @, $, %)
+
         if (c == '@' || c == '$' || c == '%' || c == '`') {
             char detalhe[50];
             sprintf(detalhe, "Simbolo '%c' nao reconhecido", c);
@@ -49,8 +51,8 @@ void analisarArquivo(const char *caminhoOriginal) {
             continue;
         }
 
-        // 4. Se não for espaço, dígito ou letra (e não for operador válido), é erro
-        // (Isso depende da sua gramática, aqui é um exemplo)
+        //  Se não for espaço, dígito ou letra (e não for operador válido), é erro
+        
         if (!isspace(c) && !isalnum(c) && strchr("+-*/=();,<>", c) == NULL) {
             char detalhe[50];
             sprintf(detalhe, "Caractere '%c' fora do padrao", c);
@@ -58,7 +60,8 @@ void analisarArquivo(const char *caminhoOriginal) {
         }
     }
 
-    // 5. Verificação de Comentário não fechado (EOF atingido)
+    //  Verificação de Comentário não fechado
+
     if (emComentario) {
         registrarErro("COMENTARIO_NAO_FECHADO", linInicioComentario, colInicioComentario, 
                       "Fim de arquivo atingido sem fechar o comentario '}'");
