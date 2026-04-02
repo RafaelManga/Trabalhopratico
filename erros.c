@@ -1,48 +1,99 @@
 #include <stdio.h>
-#include <string.h>
+#include <ctype.h>
 #include "erros.h"
 
-/* === ARQUIVO DA PESSOA 4 ===
-   Implementação provisória para o projeto compilar.
-   A pessoa 4 deve substituir esse arquivo pela versão completa. */
+void analisarArquivo(const char *caminhoOriginal) {
+    FILE *input = fopen(caminhoOriginal, "r");
+    if (!input) {
+        perror("Erro ao abrir arquivo de entrada");
+        return;
+    }
 
-#define MAX_ERROS 256
+    int c;
+    int linha = 1;
+    int coluna = 0;
+    int emComentario = 0;
+    int linInicioComentario, colInicioComentario;
 
-typedef struct {
-    char tipo[64];
-    char detalhe[256];
-    int linha;
-    int coluna;
-} Erro;
+    while ((c = fgetc(input)) != EOF) {
+        coluna++;
 
-static Erro listaErros[MAX_ERROS];
-static int totalErros = 0;
+        // 1. Gerenciamento de Linhas e Colunas
+        if (c == '\n') {
+            linha++;
+            coluna = 0;
+            continue;
+        }
 
-void registrarErro(const char *tipo, int linha, int coluna, const char *detalhe) {
-    if (totalErros >= MAX_ERROS) return;
-    strncpy(listaErros[totalErros].tipo,   tipo,   63);
-    strncpy(listaErros[totalErros].detalhe, detalhe, 255);
-    listaErros[totalErros].linha  = linha;
-    listaErros[totalErros].coluna = coluna;
-    totalErros++;
-    fprintf(stderr, "ERRO LEXICO [linha %d, col %d] %s: %s\n", linha, coluna, tipo, detalhe);
+        // 2. Lógica simplificada de Comentário (Exemplo com '{' e '}')
+        if (!emComentario && c == '{') {
+            emComentario = 1;
+            linInicioComentario = linha;
+            colInicioComentario = coluna;
+            continue;
+        }
+        
+        if (emComentario) {
+            if (c == '}') {
+                emComentario = 0;
+            }
+            continue; // Ignora tudo dentro do comentário
+        }
+
+        // 3. Detecção de Caracteres Inválidos (Ex: @, $, %)
+        // Aqui você define o que NÃO pertence à sua linguagem
+        if (c == '@' || c == '$' || c == '%' || c == '`') {
+            char detalhe[50];
+            sprintf(detalhe, "Simbolo '%c' nao reconhecido", c);
+            registrarErro("CARACTER_INVALIDO", linha, coluna, detalhe);
+            continue;
+        }
+
+        // 4. Se não for espaço, dígito ou letra (e não for operador válido), é erro
+        // (Isso depende da sua gramática, aqui é um exemplo)
+        if (!isspace(c) && !isalnum(c) && strchr("+-*/=();,<>", c) == NULL) {
+            char detalhe[50];
+            sprintf(detalhe, "Caractere '%c' fora do padrao", c);
+            registrarErro("ERRO_DESCONHECIDO", linha, coluna, detalhe);
+        }
+    }
+
+    // 5. Verificação de Comentário não fechado (EOF atingido)
+    if (emComentario) {
+        registrarErro("COMENTARIO_NAO_FECHADO", linInicioComentario, colInicioComentario, 
+                      "Fim de arquivo atingido sem fechar o comentario '}'");
+    }
+
+    fclose(input);
 }
 
-void salvarErros(const char *nomeArquivo) {
-    FILE *f = fopen(nomeArquivo, "w");
-    if (!f) return;
-    if (totalErros == 0) {
-        fprintf(f, "Nenhum erro lexico encontrado.\n");
-    } else {
-        fprintf(f, "%-25s | %-6s | %-6s | %s\n", "Tipo", "Linha", "Coluna", "Detalhe");
-        fprintf(f, "-------------------------------------------------------\n");
-        for (int i = 0; i < totalErros; i++)
-            fprintf(f, "%-25s | %-6d | %-6d | %s\n",
-                listaErros[i].tipo,
-                listaErros[i].linha,
-                listaErros[i].coluna,
-                listaErros[i].detalhe);
+int main(int argc, char *argv[]) {
+    if (argc < 2) {
+        printf("Uso: %s <arquivo.pas>\n", argv[0]);
+        return 1;
     }
-    fclose(f);
-    printf("Erros salvos em: %s\n", nomeArquivo);
+
+    // Lógica para nomes de arquivo
+    char nomeBase[256];
+    strcpy(nomeBase, argv[1]);
+    char *p = strrchr(nomeBase, '.');
+    if (p) *p = '\0';
+
+    char arquivoErr[265];
+    sprintf(arquivoErr, "%s.err", nomeBase);
+
+    // Inicia a análise
+    analisarArquivo(argv[1]);
+
+    // Salva o relatório final
+    salvarErros(arquivoErr);
+
+    if (obterTotalErros() > 0) {
+        printf("\nAnalise concluida com %d erros. Verifique o arquivo %s\n", 
+                obterTotalErros(), arquivoErr);
+    } else {
+        printf("\nAnalise concluida com sucesso! Nenhum erro encontrado.\n");
+    }
+
+    return 0;
 }
