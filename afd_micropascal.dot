@@ -1,0 +1,91 @@
+digraph AFD_MicroPascal {
+    rankdir=LR;
+    size="10,8";
+    node [shape = doublecircle]; 
+    q_id [label="ID / KW"];
+    q_num_int [label="NUM_INT"];
+    q_num_real [label="NUM_REAL"];
+    q_op_ass [label="OP_ASS"];
+    q_op_eq [label="OP_EQ"];
+    q_op_ne [label="OP_NE"];
+    q_op_le [label="OP_LE"];
+    q_op_lt [label="OP_LT"];
+    q_op_ge [label="OP_GE"];
+    q_op_gt [label="OP_GT"];
+    q_op_ad [label="OP_AD"];
+    q_op_min [label="OP_MIN"];
+    q_op_mul [label="OP_MUL"];
+    q_op_div [label="OP_DIV"];
+    q_smb_sem [label="SMB_SEM"];
+    q_smb_com [label="SMB_COM"];
+    q_smb_opa [label="SMB_OPA"];
+    q_smb_cpa [label="SMB_CPA"];
+    q_smb_col [label="SMB_COL"];
+    q_smb_dot [label="SMB_DOT"];
+
+    node [shape = circle]; 
+    q0 [label="q0 (Início)"];
+    q_colon [label="q_colon"];
+    q_less [label="q_less"];
+    q_greater [label="q_greater"];
+    q_num_dot [label="q_num_dot"];
+    q_num_e [label="q_num_e"];
+    q_num_e_sign [label="q_num_e_sign"];
+    q_comment [label="q_comment"];
+
+    // Ignorados (Espaços, Tabs, Quebras de linha)
+    q0 -> q0 [label="Espaço, \\n, \\t, \\r"];
+
+    // Comentários: iniciam com '{' e terminam com '}'
+    q0 -> q_comment [label="'{'"];
+    q_comment -> q_comment [label="Qualquer exceto '}'"];
+    q_comment -> q0 [label="'}'"];
+
+    // --------- PARTE 2: Identificadores e Palavras-chave ---------
+    q0 -> q_id [label="Letra (a-z, A-Z)"];
+    q_id -> q_id [label="Letra ou Dígito"];
+    // -------------------------------------------------------------
+
+    // Números (Inteiros e Reais)
+    q0 -> q_num_int [label="Dígito"];
+    q_num_int -> q_num_int [label="Dígito"];
+    q_num_int -> q_num_dot [label="'.'"];
+    q_num_dot -> q_num_real [label="Dígito"];
+    q_num_real -> q_num_real [label="Dígito"];
+    
+    // Notação científica para números
+    q_num_int -> q_num_e [label="'E', 'e'"];
+    q_num_real -> q_num_e [label="'E', 'e'"];
+    q_num_e -> q_num_e_sign [label="'+', '-'"];
+    q_num_e -> q_num_real [label="Dígito"];
+    q_num_e_sign -> q_num_real [label="Dígito"];
+
+    // Operadores Relacionais e de Atribuição
+    q0 -> q_colon [label="':'"];
+    q_colon -> q_op_ass [label="'='"];
+    q_colon -> q_smb_col [label="Outro (Retorna ':')"];
+
+    q0 -> q_less [label="'<'"];
+    q_less -> q_op_ne [label="'>'"];
+    q_less -> q_op_le [label="'='"];
+    q_less -> q_op_lt [label="Outro (Retorna '<')"];
+
+    q0 -> q_greater [label="'>'"];
+    q_greater -> q_op_ge [label="'='"];
+    q_greater -> q_op_gt [label="Outro (Retorna '>')"];
+
+    q0 -> q_op_eq [label="'='"];
+
+    // Operadores Aritméticos
+    q0 -> q_op_ad [label="'+'"];
+    q0 -> q_op_min [label="'-'"];
+    q0 -> q_op_mul [label="'*'"];
+    q0 -> q_op_div [label="'/'"];
+
+    // Símbolos Simples
+    q0 -> q_smb_sem [label="';'"];
+    q0 -> q_smb_com [label="','"];
+    q0 -> q_smb_opa [label="'('"];
+    q0 -> q_smb_cpa [label="')'"];
+    q0 -> q_smb_dot [label="'.'"];
+}

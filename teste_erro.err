@@ -1,0 +1,6 @@
+Tipo                      | Linha  | Coluna | Detalhe
+----------------------------------------------------------
+CARACTER_INVALIDO         | 7      | 11     | Simbolo '@' nao reconhecido
+CARACTER_INVALIDO         | 8      | 10     | Simbolo '$' nao reconhecido
+----------------------------------------------------------
+Total: 2 erro(s) encontrado(s).
