@@ -59,7 +59,15 @@ int main(int argc, char *argv[]) {
     do {
         tok = proximoToken(fonte, &ts);
 
+<<<<<<< HEAD
         if (tok.tipo == TOKEN_ERRO) continue; /* erro já registrado no lexico.c */
+=======
+        if (tok.tipo == TOKEN_ERRO) {
+            /* Repassa o erro para o módulo de erros (pessoa 4) */
+            registrarErro("CARACTERE_INVALIDO", tok.linha, tok.coluna, tok.lexema);
+            continue;
+        }
+>>>>>>> 512399c2bafa95c9a69a997a171c02675ec43a0e
 
         if (tok.tipo == TOKEN_EOF) break;
 
