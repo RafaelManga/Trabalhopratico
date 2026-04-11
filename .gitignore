@@ -1,0 +1,13 @@
+# Arquivos compilados
+*.o
+*.exe
+analisador
+
+# Saídas geradas pelo analisador
+*.lex
+*.ts
+*.err
+
+# Arquivos de sistema
+.DS_Store
+Thumbs.db
