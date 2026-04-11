@@ -71,42 +71,8 @@ make clean
 
 ### Windows
 
-**Opção 1 — MinGW (recomendado)**
-
-Instale o [MinGW](https://www.mingw-w64.org/) e execute no terminal:
-
 ```bash
 mingw32-make
-```
-
-Ou, se o `make` estiver disponível no PATH:
-
-```bash
-make
-```
-
-**Opção 2 — WSL (Windows Subsystem for Linux)**
-
-Com o WSL instalado, abra o terminal Ubuntu e execute:
-
-```bash
-make
-```
-
-**Opção 3 — Compilação manual (sem make)**
-
-```bash
-gcc -Wall -g -c palavraChave/palavraChave.c -o palavraChave/palavraChave.o
-gcc -Wall -g -c numeros/numeros.c           -o numeros/numeros.o
-gcc -Wall -g -c operacoes/operacoes.c       -o operacoes/operacoes.o
-gcc -Wall -g -c simbolos/simbolos.c         -o simbolos/simbolos.o
-gcc -Wall -g -c main.c    -o main.o
-gcc -Wall -g -c tabela.c  -o tabela.o
-gcc -Wall -g -c lexico.c  -o lexico.o
-gcc -Wall -g -c erros.c   -o erros.o
-gcc -Wall -g -o analisador main.o tabela.o lexico.o erros.o \
-    palavraChave/palavraChave.o numeros/numeros.o \
-    operacoes/operacoes.o simbolos/simbolos.o
 ```
 
 No Windows com MinGW, o executável gerado será `analisador.exe`.
