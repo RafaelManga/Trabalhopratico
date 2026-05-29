@@ -221,3 +221,12 @@ dot -Tpdf ok1.dot -o ok1_ast.pdf
 | Operadores aritméticos | `OP_AD`, `OP_MIN`, `OP_MUL`, `OP_DIV` |
 | Atribuição | `OP_ASS` |
 | Símbolos | `SMB_SEM`, `SMB_COM`, `SMB_OPA`, `SMB_CPA`, `SMB_COL`, `SMB_DOT` |
+
+---
+
+## Referencias
+
+https://github.com/luizguilhermecm/analisador-sintatico-pascal
+https://github.com/Tsukalos/syntax-analysis
+https://github.com/kszinhu/syntactic-analysis
+https://github.com/fischly/Pascal-Recursive-Descent 
