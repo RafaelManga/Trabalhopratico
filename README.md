@@ -227,6 +227,9 @@ dot -Tpdf ok1.dot -o ok1_ast.pdf
 ## Referencias
 
 https://github.com/luizguilhermecm/analisador-sintatico-pascal
+
 https://github.com/Tsukalos/syntax-analysis
+
 https://github.com/kszinhu/syntactic-analysis
+
 https://github.com/fischly/Pascal-Recursive-Descent 
