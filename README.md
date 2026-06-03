@@ -83,12 +83,6 @@ Exemplo:
 ./analisador ok1.pas
 ```
 
-Para salvar toda a saída em arquivo e facilitar capturas de tela:
-
-```bash
-./analisador ok1.pas > saidas/ok1.output 2>&1
-```
-
 ### Windows
 
 ```bash
