@@ -1,0 +1,15 @@
+*.o
+*.exe
+analisador
+*.lex
+*.ts
+*.err
+*.sint
+*.png
+*.pdf
+*.output
+saidas/
+*.dot
+!afd_micropascal.dot
+.DS_Store
+Thumbs.db
